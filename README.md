@@ -1,75 +1,31 @@
-#!/bin/bash
-# ============================================================
-# hg38_pipeline: Reproducible setup and PRNP/NEFL extraction
-# Author: Dr. Broderick Crawford
-# Reference: https://doi.org/10.5281/zenodo.16884639
-# ============================================================
+# hg38_pipeline
 
-# Exit immediately if a command exits with a non-zero status
-set -euo pipefail
+Reproducible hg38 setup and PRNP/NEFL feature extraction pipeline  
+(Associated Zenodo DOI: [10.5281/zenodo.16884639](https://doi.org/10.5281/zenodo.16884639))
 
-# ------------------------------
-# 1. Setup
-# ------------------------------
-WORKDIR="$(pwd)"
-REF_DIR="${WORKDIR}/reference"
-RESULTS_DIR="${WORKDIR}/results"
+---
 
-mkdir -p "$REF_DIR" "$RESULTS_DIR"
+## 📄 White Paper
 
-echo ">>> Working directory: $WORKDIR"
-echo ">>> Reference genome directory: $REF_DIR"
-echo ">>> Results directory: $RESULTS_DIR"
+**A Reproducible Pipeline for Human Reference Genome (hg38) Setup and Gene Feature Extraction: PRNP and NEFL Case Studies**
 
-# ------------------------------
-# 2. Download hg38 reference genome
-# ------------------------------
-cd "$REF_DIR"
-if [ ! -f "hg38.fa.gz" ]; then
-    echo ">>> Downloading hg38 reference genome..."
-    wget -O hg38.fa.gz "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz"
-else
-    echo ">>> hg38.fa.gz already exists, skipping download."
-fi
+Published on Zenodo:  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16884639.svg)](https://doi.org/10.5281/zenodo.16884639)
 
-# Unzip reference genome
-if [ ! -f "hg38.fa" ]; then
-    echo ">>> Unzipping hg38.fa.gz..."
-    gunzip -c hg38.fa.gz > hg38.fa
-else
-    echo ">>> hg38.fa already extracted."
-fi
+🔗 [Read the White Paper on Zenodo](https://zenodo.org/records/16884639)
 
-# ------------------------------
-# 3. Index the reference genome
-# ------------------------------
-if [ ! -f "hg38.fa.fai" ]; then
-    echo ">>> Indexing reference genome with samtools..."
-    samtools faidx hg38.fa
-else
-    echo ">>> hg38.fa.fai already exists, skipping indexing."
-fi
+---
 
-# ------------------------------
-# 4. Extract PRNP and NEFL genes
-# ------------------------------
-cd "$WORKDIR"
+## License
+This project is licensed under the terms of the **Creative Commons Attribution 4.0 International (CC BY 4.0)** License.  
+See the [LICENSE](LICENSE) file for details.
 
-# Define coordinates (GRCh38/hg38)
-PRNP_REGION="chr20:4699600-4702400"
-NEFL_REGION="chr8:24875000-24878000"
+---
 
-echo ">>> Extracting PRNP region: $PRNP_REGION"
-samtools faidx "$REF_DIR/hg38.fa" $PRNP_REGION > "$RESULTS_DIR/PRNP.fa"
+## Project Info
+- Author: **Dr. Broderick Crawford**  
+- Affiliation: **Independent Researcher, NeuroWell AI (San Clemente, CA, USA)**  
+- Version: **1.0 (stable release)**  
+- DOI: [10.5281/zenodo.16884639](https://doi.org/10.5281/zenodo.16884639)
 
-echo ">>> Extracting NEFL region: $NEFL_REGION"
-samtools faidx "$REF_DIR/hg38.fa" $NEFL_REGION > "$RESULTS_DIR/NEFL.fa"
-
-# ------------------------------
-# 5. Completion message
-# ------------------------------
-echo ">>> Extraction complete!"
-echo "Results saved in: $RESULTS_DIR"
-ls -lh "$RESULTS_DIR"
-
-
+*Semper Fi — clarity of process enables clarity of science.*
